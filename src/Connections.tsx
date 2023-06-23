@@ -32,7 +32,7 @@ const NewConnection = styled.div`
 const WhiteBox = styled.div`
   box-shadow: 0 4px 33px rgba(168, 198, 207, 0.15);
   background-color: #fff;
-  padding: 36px;
+  padding: 20px;
   width: 590px;
   border-radius: 10px;
   margin: 40px auto 0;
@@ -53,6 +53,7 @@ function Home() {
 
   useEffect(() => {
     async function getAtts() {
+      setAttestations([]);
       setLoading(true);
       if (!address) return;
       const tmpAttestations = await getAttestationsForAddress(address);
