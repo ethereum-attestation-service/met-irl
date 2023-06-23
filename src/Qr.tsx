@@ -18,6 +18,7 @@ import { Attestation } from "./utils/types";
 import dayjs from "dayjs";
 import { Identicon } from "./components/Identicon";
 import { QRCodeSVG } from "qrcode.react";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   @media (max-width: 700px) {
@@ -38,6 +39,18 @@ const WhiteBox = styled.div`
   @media (max-width: 700px) {
     width: 100%;
     margin: 10px auto;
+  }
+`;
+
+const SubText = styled(Link)`
+  display: block;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #ababab;
+  margin-top: 20px;
+
+  @media (min-width: 700px) {
+    display: none;
   }
 `;
 
@@ -83,11 +96,13 @@ function Home() {
         {address && (
           <QRCodeSVG
             style={{}}
-            value={`https://metirl.org/?address=${address}`}
+            value={`https://metirl.org/?address=${ens ? ens : address}`}
             includeMargin={true}
             size={300}
           />
         )}
+
+        <SubText to={"/"}>Back home</SubText>
       </SmallWhiteBox>
     </Container>
   );

@@ -16,7 +16,8 @@ import { ethers } from "ethers";
 import { Attestation } from "./utils/types";
 import dayjs from "dayjs";
 import { Identicon } from "./components/Identicon";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { FaQrcode } from "react-icons/fa";
 
 const Title = styled.div`
   color: #163a54;
@@ -43,12 +44,11 @@ const NewConnection = styled.div`
 const MetButton = styled.div`
   border-radius: 10px;
   border: 1px solid #cfb9ff;
-  background: #cfffc2;
-  box-shadow: 0 4px 30px 0 #cfb9ff;
+  background: #333342;
   width: 100%;
   padding: 20px 10px;
   box-sizing: border-box;
-  color: #000;
+  color: #fff;
   font-size: 18px;
   font-family: Montserrat, sans-serif;
   font-weight: 700;
@@ -59,6 +59,14 @@ const Time = styled.div`
   color: #163a54;
   font-size: 18px;
   font-family: Chalkboard, sans-serif;
+  margin-top: 20px;
+`;
+
+const SubText = styled(Link)`
+  display: block;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #ababab;
   margin-top: 20px;
 `;
 
@@ -76,7 +84,7 @@ const GotoAttestationButton = styled.div`
 
 const InputContainer = styled.div`
   position: relative;
-  height: 80px;
+  height: 90px;
 `;
 
 const EnsLogo = styled.img`
@@ -96,11 +104,15 @@ const InputBlock = styled.input`
   color: #131e26;
   font-size: 18px;
   font-family: Chalkboard, sans-serif;
-  padding: 12px 10px;
+  padding: 20px 10px;
   text-align: center;
   margin-top: 12px;
   box-sizing: border-box;
   width: 100%;
+`;
+
+const QrIcon = styled(FaQrcode)`
+  margin-top: 40px;
 `;
 
 const WhiteBox = styled.div`
@@ -244,9 +256,13 @@ function Home() {
             {attesting
               ? "Attesting..."
               : status === "connected"
-              ? "Attest you met"
-              : "Connect Wallet"}
+              ? "Make attestation"
+              : "Connect wallet"}
           </MetButton>
+
+          {status === "connected" && (
+            <SubText to={"/qr"}>Show my QR code</SubText>
+          )}
         </WhiteBox>
       ) : (
         <>
