@@ -1,0 +1,38 @@
+body {
+  font-family: Nunito, sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: #FFF;
+  text-align: left;
+  height: 100%;
+  min-height: 100vh;
+}
+
+main {
+  position: relative;
+  height: 100%;
+}
+
+
+.icon-spin {
+  -webkit-animation: icon-spin 2s infinite linear;
+  animation: icon-spin 2s infinite linear;
+}
+
+@-webkit-keyframes icon-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes icon-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
