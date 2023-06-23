@@ -261,7 +261,10 @@ function Home() {
           </MetButton>
 
           {status === "connected" && (
-            <SubText to={"/qr"}>Show my QR code</SubText>
+            <>
+              <SubText to={"/qr"}>Show my QR code</SubText>
+              <SubText to={"/connections"}>Connections</SubText>
+            </>
           )}
         </WhiteBox>
       ) : (

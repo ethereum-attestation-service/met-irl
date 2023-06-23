@@ -1,5 +1,11 @@
 import invariant from "tiny-invariant";
-import type { Attestation, AttestationResult, EASChainConfig } from "./types";
+import type {
+  Attestation,
+  AttestationResult,
+  EASChainConfig,
+  EnsNamesResult,
+  MyAttestationResult,
+} from "./types";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -90,4 +96,65 @@ export async function getAttestation(uid: string): Promise<Attestation | null> {
   );
 
   return response.data.data.attestation;
+}
+
+export async function getAttestationsForAddress(address: string) {
+  const response = await axios.post<MyAttestationResult>(
+    "https://sepolia.easscan.org/graphql",
+    {
+      query:
+        "query Attestations($where: AttestationWhereInput) {\n  attestations(where: $where) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  }\n}",
+      variables: {
+        where: {
+          schemaId: {
+            equals: CUSTOM_SCHEMAS.MET_IRL_SCHEMA,
+          },
+          OR: [
+            {
+              attester: {
+                equals: address,
+              },
+            },
+            {
+              recipient: {
+                equals: address,
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+
+  return response.data.data.attestations;
+}
+
+export async function getENSNames(addresses: string[]) {
+  const response = await axios.post<EnsNamesResult>(
+    "https://sepolia.easscan.org/graphql",
+    {
+      query:
+        "query Query($where: EnsNameWhereInput) {\n  ensNames(where: $where) {\n    id\n    name\n  }\n}",
+      variables: {
+        where: {
+          id: {
+            in: addresses,
+            mode: "insensitive",
+          },
+        },
+      },
+    },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+
+  return response.data.data.ensNames;
 }
