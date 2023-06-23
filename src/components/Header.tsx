@@ -49,6 +49,7 @@ const QR = styled(FaQrcode)`
 
 const LogoImage = styled.img`
   width: 40px;
+  margin-right: 4px;
 `;
 
 const Left = styled.div`
@@ -75,6 +76,15 @@ const Links = styled.div`
   gap: 20px;
 
   @media only screen and (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const MobileLinks = styled.div`
+  display: block;
+  margin-top: 20px;
+
+  @media only screen and (min-width: 900px) {
     display: none;
   }
 `;
@@ -144,7 +154,13 @@ export function Header() {
             </LogoContainer>
             <Left>
               <Links>
-                <QR size={20} color={"#BD9EFF"} onClick={() => {}} />
+                {address && (
+                  <QR
+                    size={20}
+                    color={"#BD9EFF"}
+                    onClick={() => navigate("/qr")}
+                  />
+                )}
                 {menuItems.map((menuItem, i) => (
                   <MenuItem
                     key={i}
@@ -155,6 +171,8 @@ export function Header() {
                   </MenuItem>
                 ))}
               </Links>
+
+              <MobileLinks></MobileLinks>
             </Left>
             <Right>
               <CustomConnectButton />

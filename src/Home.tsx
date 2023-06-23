@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useEnsName, useSigner } from "wagmi";
 import { useModal } from "connectkit";
 import {
   CUSTOM_SCHEMAS,
@@ -16,6 +16,7 @@ import { ethers } from "ethers";
 import { Attestation } from "./utils/types";
 import dayjs from "dayjs";
 import { Identicon } from "./components/Identicon";
+import { useSearchParams } from "react-router-dom";
 
 const Title = styled.div`
   color: #163a54;
@@ -47,7 +48,6 @@ const MetButton = styled.div`
   width: 100%;
   padding: 20px 10px;
   box-sizing: border-box;
-  margin-top: 20px;
   color: #000;
   font-size: 18px;
   font-family: Montserrat, sans-serif;
@@ -154,6 +154,14 @@ function Home() {
   const [finalAttestation, setFinalAttestation] = useState<Attestation | null>(
     null
   );
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const addressParam = searchParams.get("address");
+    if (addressParam) {
+      setAddress(addressParam);
+    }
+  }, []);
 
   useEffect(() => {
     async function checkENS() {

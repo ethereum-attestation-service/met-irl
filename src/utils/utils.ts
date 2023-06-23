@@ -54,12 +54,20 @@ export const EAS_CONFIG = {
 
 export const timeFormatString = "MM/DD/YYYY h:mm:ss a";
 
-export async function getAddressForENS(address: string) {
+export async function getAddressForENS(name: string) {
   const provider = new ethers.providers.StaticJsonRpcProvider(
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
     "mainnet"
   );
-  return await provider.resolveName(address);
+  return await provider.resolveName(name);
+}
+
+export async function getENSName(address: string) {
+  const provider = new ethers.providers.StaticJsonRpcProvider(
+    `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+    "mainnet"
+  );
+  return await provider.lookupAddress(address);
 }
 
 export async function getAttestation(uid: string): Promise<Attestation | null> {
