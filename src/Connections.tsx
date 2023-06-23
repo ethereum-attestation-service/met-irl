@@ -49,9 +49,11 @@ const eas = new EAS(EASContractAddress);
 function Home() {
   const { address } = useAccount();
   const [attestations, setAttestations] = useState<ResolvedAttestation[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getAtts() {
+      setLoading(true);
       if (!address) return;
       const tmpAttestations = await getAttestationsForAddress(address);
 
@@ -87,6 +89,7 @@ function Home() {
       });
 
       setAttestations(resolvedAttestations);
+      setLoading(false);
     }
     getAtts();
   }, [address]);
@@ -97,6 +100,7 @@ function Home() {
       <NewConnection>Who you met IRL.</NewConnection>
       <AttestationHolder>
         <WhiteBox>
+          {loading && <div>Loading...</div>}
           {attestations.map((attestation, i) => (
             <AttestationItem key={i} data={attestation} />
           ))}
