@@ -205,6 +205,9 @@ function Home() {
 
           <InputContainer>
             <InputBlock
+              autoCorrect={"off"}
+              autoComplete={"off"}
+              autoCapitalize={"off"}
               placeholder={"Address/ENS"}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
