@@ -130,13 +130,18 @@ export function Header() {
 
   let menuItems: MenuItemType[] = [
     {
-      title: "Make connection",
+      title: "Attest",
       onClick: () => navigate("/"),
       path: "/",
     },
   ];
 
   if (address) {
+    menuItems.push({
+      title: "Connections",
+      onClick: () => navigate("/connections"),
+      path: "/connections",
+    });
   }
 
   invariant(activeChainConfig, "activeChainConfig is not set");
