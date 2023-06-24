@@ -54,7 +54,7 @@ export function AttestationItem({ data }: Props) {
       <IconHolder>
         <Identicon
           address={
-            data.attester === address.toLocaleLowerCase()
+            data.attester.toLowerCase() === address.toLocaleLowerCase()
               ? data.recipient
               : data.attester
           }

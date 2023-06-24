@@ -103,7 +103,8 @@ export async function getAttestationsForAddress(address: string) {
     "https://sepolia.easscan.org/graphql",
     {
       query:
-        "query Attestations($where: AttestationWhereInput) {\n  attestations(where: $where) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  }\n}",
+        "query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!]) {\n  attestations(where: $where, orderBy: $orderBy) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  }\n}",
+
       variables: {
         where: {
           schemaId: {
@@ -122,6 +123,11 @@ export async function getAttestationsForAddress(address: string) {
             },
           ],
         },
+        orderBy: [
+          {
+            time: "desc",
+          },
+        ],
       },
     },
     {
