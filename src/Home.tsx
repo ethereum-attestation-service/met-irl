@@ -242,11 +242,6 @@ function Home() {
                   const attestation = await getAttestation(uid);
 
                   setFinalAttestation(attestation);
-
-                  // window.open(
-                  //   `https://sepolia.easscan.org/attestation/view/${uid}`,
-                  //   "_blank"
-                  // );
                 } catch (e) {}
 
                 setAttesting(false);

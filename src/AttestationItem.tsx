@@ -1,11 +1,19 @@
-import { Attestation, ResolvedAttestation } from "./utils/types";
+import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import dayjs from "dayjs";
-import { timeFormatString } from "./utils/utils";
-import { FaCheck } from "react-icons/fa";
+import {
+  CUSTOM_SCHEMAS,
+  EASContractAddress,
+  timeFormatString,
+} from "./utils/utils";
 import { theme } from "./utils/theme";
+import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import invariant from "tiny-invariant";
+import { ethers } from "ethers";
+import { useState } from "react";
+import { MdOutlineVerified, MdVerified } from "react-icons/md";
 
 const Container = styled.div`
   border-radius: 25px;
@@ -24,6 +32,12 @@ const Container = styled.div`
   @media (max-width: 700px) {
     display: block;
     text-align: center;
+  }
+`;
+
+const VerifyIconContainer = styled.div`
+  @media (max-width: 700px) {
+    margin-top: 16px;
   }
 `;
 
@@ -50,7 +64,7 @@ const Time = styled.div`
   color: #adadad;
   text-align: center;
   font-size: 14px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
 `;
 const Check = styled.div``;
 
@@ -63,7 +77,6 @@ const ConfirmButton = styled.div`
   box-sizing: border-box;
   color: #fff;
   font-size: 12px;
-  box-sizing: border-box;
   font-family: Montserrat, sans-serif;
   font-weight: 700;
   cursor: pointer;
@@ -71,6 +84,12 @@ const ConfirmButton = styled.div`
   :hover {
     background: #cfb9ff;
     color: #333342;
+    padding: 14px 8px;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: 10px;
+    width: 100%;
   }
 `;
 
@@ -78,13 +97,25 @@ type Props = {
   data: ResolvedAttestation;
 };
 
+const eas = new EAS(EASContractAddress);
+
 export function AttestationItem({ data }: Props) {
   const { address } = useAccount();
+  const [confirming, setConfirming] = useState(false);
+
   if (!address) return null;
 
   const isAttester = data.attester.toLowerCase() === address.toLowerCase();
   const isConfirmed = !!data.confirmation;
   const isConfirmable = !isAttester && !isConfirmed;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: signer } = useSigner();
+
+  let Icon = MdVerified;
+
+  if (!isConfirmed) {
+    Icon = MdOutlineVerified;
+  }
 
   return (
     <Container
@@ -102,15 +133,50 @@ export function AttestationItem({ data }: Props) {
       <Time>{dayjs.unix(data.time).format(timeFormatString)}</Time>
       <Check>
         {isConfirmable ? (
-          <ConfirmButton>Confim</ConfirmButton>
+          <ConfirmButton
+            onClick={async (e) => {
+              e.stopPropagation();
+
+              setConfirming(true);
+              try {
+                const schemaEncoder = new SchemaEncoder("bool confirm");
+                const encoded = schemaEncoder.encodeData([
+                  { name: "confirm", type: "bool", value: true },
+                ]);
+
+                invariant(signer, "signer must be defined");
+                eas.connect(signer);
+
+                const tx = await eas.attest({
+                  data: {
+                    recipient: ethers.constants.AddressZero,
+                    data: encoded,
+                    refUID: data.id,
+                    revocable: true,
+                    expirationTime: 0,
+                  },
+                  schema: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
+                });
+
+                await tx.wait();
+                setConfirming(false);
+                window.location.reload();
+              } catch (e) {}
+            }}
+          >
+            {confirming ? "Confirming..." : "Confim"}
+          </ConfirmButton>
         ) : (
-          <FaCheck
-            color={
-              data.confirmation
-                ? theme.supporting["green-vivid-400"]
-                : theme.neutrals["cool-grey-100"]
-            }
-          />
+          <VerifyIconContainer>
+            <Icon
+              color={
+                data.confirmation
+                  ? theme.supporting["green-vivid-400"]
+                  : theme.neutrals["cool-grey-100"]
+              }
+              size={22}
+            />
+          </VerifyIconContainer>
         )}
       </Check>
     </Container>
