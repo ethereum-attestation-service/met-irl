@@ -70,23 +70,18 @@ function Home() {
       const ensNames = await getENSNames(Array.from(addresses));
 
       tmpAttestations.forEach((att) => {
-        if (att.attester.toLowerCase() === address.toLocaleLowerCase()) {
-          resolvedAttestations.push({
-            ...att,
-            name:
-              ensNames.find(
-                (name) => name.id.toLowerCase() === att.recipient.toLowerCase()
-              )?.name || att.recipient,
-          });
-        } else {
-          resolvedAttestations.push({
-            ...att,
-            name:
-              ensNames.find(
-                (name) => name.id.toLowerCase() === att.attester.toLowerCase()
-              )?.name || att.attester,
-          });
-        }
+        const identity =
+          att.attester.toLowerCase() === address.toLocaleLowerCase()
+            ? att.recipient
+            : att.attester;
+
+        resolvedAttestations.push({
+          ...att,
+          name:
+            ensNames.find(
+              (name) => name.id.toLowerCase() === identity.toLowerCase()
+            )?.name || identity,
+        });
       });
 
       setAttestations(resolvedAttestations);

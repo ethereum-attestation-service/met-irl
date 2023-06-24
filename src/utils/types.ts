@@ -44,4 +44,7 @@ export interface Attestation {
   data: string;
 }
 
-export type ResolvedAttestation = Attestation & { name: string };
+export type ResolvedAttestation = Attestation & {
+  name: string;
+  confirmation?: Attestation;
+};

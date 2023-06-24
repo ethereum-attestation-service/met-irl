@@ -45,6 +45,8 @@ export function AttestationItem({ data }: Props) {
   const { address } = useAccount();
   if (!address) return null;
 
+  const isAttester = data.attester.toLowerCase() === address.toLowerCase();
+
   return (
     <Container
       onClick={() => {
@@ -53,11 +55,7 @@ export function AttestationItem({ data }: Props) {
     >
       <IconHolder>
         <Identicon
-          address={
-            data.attester.toLowerCase() === address.toLocaleLowerCase()
-              ? data.recipient
-              : data.attester
-          }
+          address={isAttester ? data.recipient : data.attester}
           size={60}
         />
       </IconHolder>
