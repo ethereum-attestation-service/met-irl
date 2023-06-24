@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import { Identicon } from "./components/Identicon";
 import { Link, useSearchParams } from "react-router-dom";
 import { FaQrcode } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 const Title = styled.div`
   color: #163a54;
@@ -167,6 +168,7 @@ function Home() {
     null
   );
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const addressParam = searchParams.get("address");
@@ -241,7 +243,8 @@ function Home() {
 
                   const attestation = await getAttestation(uid);
 
-                  setFinalAttestation(attestation);
+                  // setFinalAttestation(attestation);
+                  navigate(`/connections`);
                 } catch (e) {}
 
                 setAttesting(false);

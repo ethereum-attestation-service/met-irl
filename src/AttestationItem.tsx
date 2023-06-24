@@ -84,12 +84,12 @@ const ConfirmButton = styled.div`
   :hover {
     background: #cfb9ff;
     color: #333342;
-    padding: 14px 8px;
   }
 
   @media (max-width: 700px) {
     margin-top: 10px;
     width: 100%;
+    padding: 14px 8px;
   }
 `;
 

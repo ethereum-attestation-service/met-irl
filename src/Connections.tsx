@@ -3,12 +3,10 @@ import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
 import { useAccount } from "wagmi";
 import {
-  EASContractAddress,
   getAttestationsForAddress,
   getConfirmationAttestationsForUIDs,
   getENSNames,
 } from "./utils/utils";
-import { EAS } from "@ethereum-attestation-service/eas-sdk";
 import { ResolvedAttestation } from "./utils/types";
 import { AttestationItem } from "./AttestationItem";
 
@@ -45,8 +43,6 @@ const WhiteBox = styled.div`
   }
 `;
 
-const eas = new EAS(EASContractAddress);
-
 function Home() {
   const { address } = useAccount();
   const [attestations, setAttestations] = useState<ResolvedAttestation[]>([]);
@@ -78,22 +74,27 @@ function Home() {
         const amIAttester =
           att.attester.toLowerCase() === address.toLowerCase();
 
-        const identity = amIAttester ? att.recipient : att.attester;
+        const otherGuy = amIAttester ? att.recipient : att.attester;
 
-        const relatedConfirmation = confirmations.find(
-          (conf) =>
+        console.log(confirmations, att);
+
+        const relatedConfirmation = confirmations.find((conf) => {
+          return (
             conf.refUID === att.id &&
-            conf.attester.toLowerCase() ===
-              (amIAttester ? att.attester : att.recipient).toLowerCase()
-        );
+            ((amIAttester &&
+              conf.attester.toLowerCase() === otherGuy.toLowerCase()) ||
+              (!amIAttester &&
+                conf.attester.toLowerCase() === address.toLowerCase()))
+          );
+        });
 
         resolvedAttestations.push({
           ...att,
           confirmation: relatedConfirmation,
           name:
             ensNames.find(
-              (name) => name.id.toLowerCase() === identity.toLowerCase()
-            )?.name || identity,
+              (name) => name.id.toLowerCase() === otherGuy.toLowerCase()
+            )?.name || otherGuy,
         });
       });
 
