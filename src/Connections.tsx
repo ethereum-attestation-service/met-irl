@@ -111,9 +111,13 @@ function Home() {
       <AttestationHolder>
         <WhiteBox>
           {loading && <div>Loading...</div>}
-          {attestations.map((attestation, i) => (
-            <AttestationItem key={i} data={attestation} />
-          ))}
+          {attestations.length > 0 || loading ? (
+            attestations.map((attestation, i) => (
+              <AttestationItem key={i} data={attestation} />
+            ))
+          ) : (
+            <div>No one here yet</div>
+          )}
         </WhiteBox>
       </AttestationHolder>
     </Container>

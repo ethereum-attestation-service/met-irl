@@ -13,12 +13,9 @@ import {
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import invariant from "tiny-invariant";
 import { ethers } from "ethers";
-import { Attestation } from "./utils/types";
-import dayjs from "dayjs";
-import { Identicon } from "./components/Identicon";
 import { Link, useSearchParams } from "react-router-dom";
-import { FaQrcode } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 const Title = styled.div`
   color: #163a54;
@@ -30,16 +27,6 @@ const Container = styled.div`
   @media (max-width: 700px) {
     width: 100%;
   }
-`;
-
-const NewConnection = styled.div`
-  color: #333342;
-  text-align: center;
-  font-size: 25px;
-  font-family: Montserrat, sans-serif;
-  font-style: italic;
-  font-weight: 700;
-  margin-top: 20px;
 `;
 
 const MetButton = styled.div`
@@ -56,31 +43,12 @@ const MetButton = styled.div`
   cursor: pointer;
 `;
 
-const Time = styled.div`
-  color: #163a54;
-  font-size: 18px;
-  font-family: Chalkboard, sans-serif;
-  margin-top: 20px;
-`;
-
 const SubText = styled(Link)`
   display: block;
   cursor: pointer;
   text-decoration: underline;
   color: #ababab;
   margin-top: 20px;
-`;
-
-const GotoAttestationButton = styled.div`
-  color: #163a54;
-  font-size: 16px;
-  font-family: Chalkboard, sans-serif;
-  padding: 14px 20px;
-  border-radius: 8px;
-  border: 1px solid #163a54;
-  background: #fff;
-  margin-top: 30px;
-  cursor: pointer;
 `;
 
 const InputContainer = styled.div`
@@ -112,10 +80,6 @@ const InputBlock = styled.input`
   width: 100%;
 `;
 
-const QrIcon = styled(FaQrcode)`
-  margin-top: 40px;
-`;
-
 const WhiteBox = styled.div`
   box-shadow: 0 4px 33px rgba(168, 198, 207, 0.15);
   background-color: #fff;
@@ -131,30 +95,6 @@ const WhiteBox = styled.div`
   }
 `;
 
-const FinalAddress = styled.div`
-  color: #333342;
-  text-align: center;
-  font-size: 36px;
-  font-family: Montserrat, sans-serif;
-  font-weight: 700;
-  word-break: break-all;
-`;
-
-const SmallWhiteBox = styled(WhiteBox)`
-  max-width: 400px;
-  margin-top: 80px;
-  position: relative;
-  padding-top: 80px;
-  padding-bottom: 40px;
-`;
-
-const IconHolder = styled.div`
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
 const eas = new EAS(EASContractAddress);
 
 function Home() {
@@ -164,9 +104,6 @@ function Home() {
   const { data: signer } = useSigner();
   const [attesting, setAttesting] = useState(false);
   const [ensResolvedAddress, setEnsResolvedAddress] = useState("Dakh.eth");
-  const [finalAttestation, setFinalAttestation] = useState<Attestation | null>(
-    null
-  );
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -197,106 +134,86 @@ function Home() {
   return (
     <Container>
       <GradientBar />
-      {!finalAttestation ? (
-        <WhiteBox>
-          <Title>
-            I <b>attest</b> that I met
-          </Title>
+      <WhiteBox>
+        <Title>
+          I <b>attest</b> that I met
+        </Title>
 
-          <InputContainer>
-            <InputBlock
-              autoCorrect={"off"}
-              autoComplete={"off"}
-              autoCapitalize={"off"}
-              placeholder={"Address/ENS"}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
-          </InputContainer>
-          <MetButton
-            onClick={async () => {
-              if (status !== "connected") {
-                modal.setOpen(true);
-              } else {
-                setAttesting(true);
-                try {
-                  const schemaEncoder = new SchemaEncoder("bool metIRL");
-                  const encoded = schemaEncoder.encodeData([
-                    { name: "metIRL", type: "bool", value: true },
-                  ]);
+        <InputContainer>
+          <InputBlock
+            autoCorrect={"off"}
+            autoComplete={"off"}
+            autoCapitalize={"off"}
+            placeholder={"Address/ENS"}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
+        </InputContainer>
+        <MetButton
+          onClick={async () => {
+            if (status !== "connected") {
+              modal.setOpen(true);
+            } else {
+              setAttesting(true);
+              try {
+                const schemaEncoder = new SchemaEncoder("bool metIRL");
+                const encoded = schemaEncoder.encodeData([
+                  { name: "metIRL", type: "bool", value: true },
+                ]);
 
-                  invariant(signer, "signer must be defined");
-                  eas.connect(signer);
+                invariant(signer, "signer must be defined");
+                eas.connect(signer);
 
-                  const tx = await eas.attest({
-                    data: {
-                      recipient: ensResolvedAddress
-                        ? ensResolvedAddress
-                        : address,
-                      data: encoded,
-                      refUID: ethers.constants.HashZero,
-                      revocable: true,
-                      expirationTime: 0,
-                    },
-                    schema: CUSTOM_SCHEMAS.MET_IRL_SCHEMA,
-                  });
+                const recipient = ensResolvedAddress
+                  ? ensResolvedAddress
+                  : address;
 
-                  const uid = await tx.wait();
+                const tx = await eas.attest({
+                  data: {
+                    recipient: recipient,
+                    data: encoded,
+                    refUID: ethers.constants.HashZero,
+                    revocable: true,
+                    expirationTime: 0,
+                  },
+                  schema: CUSTOM_SCHEMAS.MET_IRL_SCHEMA,
+                });
 
-                  const attestation = await getAttestation(uid);
+                const uid = await tx.wait();
 
-                  // setFinalAttestation(attestation);
-                  navigate(`/connections`);
-                } catch (e) {}
+                const attestation = await getAttestation(uid);
 
-                setAttesting(false);
-              }
-            }}
-          >
-            {attesting
-              ? "Attesting..."
-              : status === "connected"
-              ? "Make attestation"
-              : "Connect wallet"}
-          </MetButton>
+                Promise.all([
+                  axios.get(
+                    `https://sepolia.easscan.org/api/getENS/${address}`
+                  ),
+                  axios.get(
+                    `https://sepolia.easscan.org/api/getENS/${recipient}`
+                  ),
+                ]);
 
-          {status === "connected" && (
-            <>
-              <SubText to={"/qr"}>Show my QR code</SubText>
-              <SubText to={"/connections"}>Connections</SubText>
-            </>
-          )}
-        </WhiteBox>
-      ) : (
-        <>
-          <NewConnection>New Connection! 👋</NewConnection>
+                navigate(`/connections`);
+              } catch (e) {}
 
-          <SmallWhiteBox>
-            <IconHolder>
-              <Identicon address={finalAttestation.recipient} size={100} />
-            </IconHolder>
-            <FinalAddress>
-              {ensResolvedAddress ? ensResolvedAddress : address}
-            </FinalAddress>
+              setAttesting(false);
+            }
+          }}
+        >
+          {attesting
+            ? "Attesting..."
+            : status === "connected"
+            ? "Make attestation"
+            : "Connect wallet"}
+        </MetButton>
 
-            <Time>
-              {dayjs.unix(finalAttestation.time).format(timeFormatString)}
-            </Time>
-
-            <GotoAttestationButton
-              onClick={() => {
-                window.open(
-                  `https://sepolia.easscan.org/attestation/view/${finalAttestation?.id}`,
-                  "_blank"
-                );
-              }}
-            >
-              Go to attestation record
-            </GotoAttestationButton>
-          </SmallWhiteBox>
-        </>
-      )}
+        {status === "connected" && (
+          <>
+            <SubText to={"/qr"}>Show my QR code</SubText>
+            <SubText to={"/connections"}>Connections</SubText>
+          </>
+        )}
+      </WhiteBox>
     </Container>
   );
 }
