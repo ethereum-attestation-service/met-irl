@@ -18,9 +18,20 @@ const Container = styled.div`
   align-items: center;
   gap: 16px;
   cursor: pointer;
+
+  @media (max-width: 700px) {
+    display: block;
+    text-align: center;
+  }
 `;
 
-const IconHolder = styled.div``;
+const IconHolder = styled.div`
+  @media (max-width: 700px) {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+`;
 const NameHolder = styled.div`
   color: #000;
   text-align: center;
@@ -28,6 +39,10 @@ const NameHolder = styled.div`
   font-family: Montserrat, sans-serif;
   font-weight: 700;
   word-break: break-all;
+
+  @media (max-width: 700px) {
+    margin-bottom: 10px;
+  }
 `;
 const Time = styled.div`
   color: #adadad;
