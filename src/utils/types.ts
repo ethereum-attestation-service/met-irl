@@ -37,6 +37,7 @@ export interface Attestation {
   id: string;
   attester: string;
   recipient: string;
+  refUID: string;
   revocationTime: number;
   expirationTime: number;
   time: number;

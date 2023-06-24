@@ -4,6 +4,8 @@ import { Identicon } from "./components/Identicon";
 import { useAccount } from "wagmi";
 import dayjs from "dayjs";
 import { timeFormatString } from "./utils/utils";
+import { FaCheck } from "react-icons/fa";
+import { theme } from "./utils/theme";
 
 const Container = styled.div`
   border-radius: 25px;
@@ -52,6 +54,26 @@ const Time = styled.div`
 `;
 const Check = styled.div``;
 
+const ConfirmButton = styled.div`
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid #cfb9ff;
+  background: #333342;
+  padding: 8px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 12px;
+  box-sizing: border-box;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+
+  :hover {
+    background: #cfb9ff;
+    color: #333342;
+  }
+`;
+
 type Props = {
   data: ResolvedAttestation;
 };
@@ -61,6 +83,8 @@ export function AttestationItem({ data }: Props) {
   if (!address) return null;
 
   const isAttester = data.attester.toLowerCase() === address.toLowerCase();
+  const isConfirmed = !!data.confirmation;
+  const isConfirmable = !isAttester && !isConfirmed;
 
   return (
     <Container
@@ -76,6 +100,19 @@ export function AttestationItem({ data }: Props) {
       </IconHolder>
       <NameHolder>{data.name}</NameHolder>
       <Time>{dayjs.unix(data.time).format(timeFormatString)}</Time>
+      <Check>
+        {isConfirmable ? (
+          <ConfirmButton>Confim</ConfirmButton>
+        ) : (
+          <FaCheck
+            color={
+              data.confirmation
+                ? theme.supporting["green-vivid-400"]
+                : theme.neutrals["cool-grey-100"]
+            }
+          />
+        )}
+      </Check>
     </Container>
   );
 }

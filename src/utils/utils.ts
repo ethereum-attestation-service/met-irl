@@ -142,6 +142,39 @@ export async function getAttestationsForAddress(address: string) {
   return response.data.data.attestations;
 }
 
+export async function getConfirmationAttestationsForUIDs(refUids: string[]) {
+  const response = await axios.post<MyAttestationResult>(
+    "https://sepolia.easscan.org/graphql",
+    {
+      query:
+        "query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!]) {\n  attestations(where: $where, orderBy: $orderBy) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  refUID\n  }\n}",
+
+      variables: {
+        where: {
+          schemaId: {
+            equals: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
+          },
+          refUID: {
+            in: refUids,
+          },
+        },
+        orderBy: [
+          {
+            time: "desc",
+          },
+        ],
+      },
+    },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+
+  return response.data.data.attestations;
+}
+
 export async function getENSNames(addresses: string[]) {
   const response = await axios.post<EnsNamesResult>(
     "https://sepolia.easscan.org/graphql",

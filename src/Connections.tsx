@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import {
   EASContractAddress,
   getAttestationsForAddress,
+  getConfirmationAttestationsForUIDs,
   getENSNames,
 } from "./utils/utils";
 import { EAS } from "@ethereum-attestation-service/eas-sdk";
@@ -69,14 +70,26 @@ function Home() {
 
       const ensNames = await getENSNames(Array.from(addresses));
 
+      const uids = tmpAttestations.map((att) => att.id);
+
+      const confirmations = await getConfirmationAttestationsForUIDs(uids);
+
       tmpAttestations.forEach((att) => {
-        const identity =
-          att.attester.toLowerCase() === address.toLocaleLowerCase()
-            ? att.recipient
-            : att.attester;
+        const amIAttester =
+          att.attester.toLowerCase() === address.toLowerCase();
+
+        const identity = amIAttester ? att.recipient : att.attester;
+
+        const relatedConfirmation = confirmations.find(
+          (conf) =>
+            conf.refUID === att.id &&
+            conf.attester.toLowerCase() ===
+              (amIAttester ? att.attester : att.recipient).toLowerCase()
+        );
 
         resolvedAttestations.push({
           ...att,
+          confirmation: relatedConfirmation,
           name:
             ensNames.find(
               (name) => name.id.toLowerCase() === identity.toLowerCase()
