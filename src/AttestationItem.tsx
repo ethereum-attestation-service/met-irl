@@ -4,6 +4,7 @@ import { Identicon } from "./components/Identicon";
 import { useAccount, useSigner } from "wagmi";
 import dayjs from "dayjs";
 import {
+  baseURL,
   CUSTOM_SCHEMAS,
   EASContractAddress,
   timeFormatString,
@@ -120,7 +121,7 @@ export function AttestationItem({ data }: Props) {
   return (
     <Container
       onClick={() => {
-        window.open(`https://sepolia.easscan.org/attestation/view/${data.id}`);
+        window.open(`${baseURL}/attestation/view/${data.id}`);
       }}
     >
       <IconHolder>

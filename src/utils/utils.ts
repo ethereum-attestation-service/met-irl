@@ -49,9 +49,11 @@ export const activeChainConfig = EAS_CHAIN_CONFIGS.find(
   (config) => config.chainId === CHAINID
 );
 
-invariant(activeChainConfig, "No chain config found for chain ID");
+export const baseURL = `https://${activeChainConfig!.subdomain}easscan.org`;
 
+invariant(activeChainConfig, "No chain config found for chain ID");
 export const EASContractAddress = activeChainConfig.contractAddress;
+
 export const EASVersion = activeChainConfig.version;
 
 export const EAS_CONFIG = {
@@ -61,7 +63,6 @@ export const EAS_CONFIG = {
 };
 
 export const timeFormatString = "MM/DD/YYYY h:mm:ss a";
-
 export async function getAddressForENS(name: string) {
   const provider = new ethers.providers.StaticJsonRpcProvider(
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
@@ -69,7 +70,6 @@ export async function getAddressForENS(name: string) {
   );
   return await provider.resolveName(name);
 }
-
 export async function getENSName(address: string) {
   const provider = new ethers.providers.StaticJsonRpcProvider(
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
@@ -77,10 +77,9 @@ export async function getENSName(address: string) {
   );
   return await provider.lookupAddress(address);
 }
-
 export async function getAttestation(uid: string): Promise<Attestation | null> {
   const response = await axios.post<AttestationResult>(
-    "https://sepolia.easscan.org/graphql",
+    `${baseURL}/graphql`,
     {
       query:
         "query Query($where: AttestationWhereUniqueInput!) {\n  attestation(where: $where) {\n    id\n    attester\n    recipient\n    revocationTime\n    expirationTime\n    time\n    txid\n    data\n  }\n}",
@@ -96,13 +95,11 @@ export async function getAttestation(uid: string): Promise<Attestation | null> {
       },
     }
   );
-
   return response.data.data.attestation;
 }
-
 export async function getAttestationsForAddress(address: string) {
   const response = await axios.post<MyAttestationResult>(
-    "https://sepolia.easscan.org/graphql",
+    `${baseURL}/graphql`,
     {
       query:
         "query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!]) {\n  attestations(where: $where, orderBy: $orderBy) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  }\n}",
@@ -138,13 +135,11 @@ export async function getAttestationsForAddress(address: string) {
       },
     }
   );
-
   return response.data.data.attestations;
 }
-
 export async function getConfirmationAttestationsForUIDs(refUids: string[]) {
   const response = await axios.post<MyAttestationResult>(
-    "https://sepolia.easscan.org/graphql",
+    `${baseURL}/graphql`,
     {
       query:
         "query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!]) {\n  attestations(where: $where, orderBy: $orderBy) {\n    attester\n    revocationTime\n    expirationTime\n    time\n    recipient\n    id\n    data\n  refUID\n  }\n}",
@@ -171,13 +166,11 @@ export async function getConfirmationAttestationsForUIDs(refUids: string[]) {
       },
     }
   );
-
   return response.data.data.attestations;
 }
-
 export async function getENSNames(addresses: string[]) {
   const response = await axios.post<EnsNamesResult>(
-    "https://sepolia.easscan.org/graphql",
+    `${baseURL}/graphql`,
     {
       query:
         "query Query($where: EnsNameWhereInput) {\n  ensNames(where: $where) {\n    id\n    name\n  }\n}",
@@ -196,6 +189,5 @@ export async function getENSNames(addresses: string[]) {
       },
     }
   );
-
   return response.data.data.ensNames;
 }

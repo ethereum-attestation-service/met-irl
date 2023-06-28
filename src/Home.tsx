@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
-import { useAccount, useEnsName, useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import { useModal } from "connectkit";
 import {
+  baseURL,
   CUSTOM_SCHEMAS,
   EASContractAddress,
   getAddressForENS,
   getAttestation,
-  timeFormatString,
 } from "./utils/utils";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import invariant from "tiny-invariant";
@@ -185,12 +185,8 @@ function Home() {
                 const attestation = await getAttestation(uid);
 
                 Promise.all([
-                  axios.get(
-                    `https://sepolia.easscan.org/api/getENS/${address}`
-                  ),
-                  axios.get(
-                    `https://sepolia.easscan.org/api/getENS/${recipient}`
-                  ),
+                  axios.get(`${baseURL}/api/getENS/${address}`),
+                  axios.get(`${baseURL}/api/getENS/${recipient}`),
                 ]);
 
                 navigate(`/connections`);
