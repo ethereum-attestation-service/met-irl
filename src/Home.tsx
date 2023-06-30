@@ -184,7 +184,8 @@ function Home() {
 
                 const attestation = await getAttestation(uid);
 
-                Promise.all([
+                // Update ENS names
+                await Promise.all([
                   axios.get(`${baseURL}/api/getENS/${address}`),
                   axios.get(`${baseURL}/api/getENS/${recipient}`),
                 ]);
