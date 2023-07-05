@@ -68,6 +68,7 @@ export async function getAddressForENS(name: string) {
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
     "mainnet"
   );
+
   return await provider.resolveName(name);
 }
 export async function getENSName(address: string) {

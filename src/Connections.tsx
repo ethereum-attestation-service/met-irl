@@ -76,8 +76,6 @@ function Home() {
 
         const otherGuy = amIAttester ? att.recipient : att.attester;
 
-        console.log(confirmations, att);
-
         const relatedConfirmation = confirmations.find((conf) => {
           return (
             conf.refUID === att.id &&

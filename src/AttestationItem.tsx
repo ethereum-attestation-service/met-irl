@@ -1,7 +1,7 @@
 import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useEnsAvatar, useSigner } from "wagmi";
 import dayjs from "dayjs";
 import {
   baseURL,
@@ -109,6 +109,7 @@ export function AttestationItem({ data }: Props) {
   const isAttester = data.attester.toLowerCase() === address.toLowerCase();
   const isConfirmed = !!data.confirmation;
   const isConfirmable = !isAttester && !isConfirmed;
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: signer } = useSigner();
 
@@ -165,7 +166,7 @@ export function AttestationItem({ data }: Props) {
               } catch (e) {}
             }}
           >
-            {confirming ? "Confirming..." : "Confim we met"}
+            {confirming ? "Confirming..." : "Confirm we met"}
           </ConfirmButton>
         ) : (
           <VerifyIconContainer>
