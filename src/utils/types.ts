@@ -49,3 +49,11 @@ export type ResolvedAttestation = Attestation & {
   name: string;
   confirmation?: Attestation;
 };
+
+export type StoreAttestationRequest = { filename: string; textJson: string };
+
+export type StoreIPFSActionReturn = {
+  error: null | string;
+  ipfsHash: string | null;
+  offchainAttestationId: string | null;
+};

@@ -1,16 +1,22 @@
 import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount, useEnsAvatar, useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import dayjs from "dayjs";
 import {
   baseURL,
   CUSTOM_SCHEMAS,
   EASContractAddress,
+  submitSignedAttestation,
   timeFormatString,
 } from "./utils/utils";
 import { theme } from "./utils/theme";
-import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import {
+  AttestationShareablePackageObject,
+  EAS,
+  SchemaEncoder,
+  TypedDataSigner,
+} from "@ethereum-attestation-service/eas-sdk";
 import invariant from "tiny-invariant";
 import { ethers } from "ethers";
 import { useState } from "react";
@@ -149,20 +155,33 @@ export function AttestationItem({ data }: Props) {
                 invariant(signer, "signer must be defined");
                 eas.connect(signer);
 
-                const tx = await eas.attest({
-                  data: {
-                    recipient: ethers.constants.AddressZero,
-                    data: encoded,
-                    refUID: data.id,
-                    revocable: true,
-                    expirationTime: 0,
-                  },
-                  schema: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
-                });
+                const offchain = await eas.getOffchain();
 
-                await tx.wait();
-                setConfirming(false);
+                const signedOffchainAttestation =
+                  await offchain.signOffchainAttestation(
+                    {
+                      schema: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
+                      recipient: ethers.constants.AddressZero,
+                      refUID: data.id,
+                      data: encoded,
+                      time: dayjs().unix(),
+                      revocable: true,
+                      expirationTime: 0,
+                      version: 1,
+                      nonce: 0,
+                    },
+                    signer as unknown as TypedDataSigner // Wagmi doesnt believe signer is typeddatasigner
+                  );
+
+                const pkg: AttestationShareablePackageObject = {
+                  signer: address,
+                  sig: signedOffchainAttestation,
+                };
+
+                const result = await submitSignedAttestation(pkg);
+
                 window.location.reload();
+                setConfirming(false);
               } catch (e) {}
             }}
           >

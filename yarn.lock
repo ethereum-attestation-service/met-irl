@@ -1418,14 +1418,16 @@
     hardhat "2.13.1"
     typechain "^8.1.1"
 
-"@ethereum-attestation-service/eas-sdk@^0.29.0":
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-sdk/-/eas-sdk-0.29.0.tgz#59d4b2369a5147b217c23438ef3aea2b4dfa489c"
-  integrity sha512-uSsfuQefQSOy/6H2sAB/r6/PegpWzdfXwSpcc9zddIwh7ZGHx2Ks5ufM1EsQ8p16nRUqS9uZE9Mh1/l1TWbm7A==
+"@ethereum-attestation-service/eas-sdk@0.29.1":
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-sdk/-/eas-sdk-0.29.1.tgz#3dd701eddfa3cd15ae3ecbdddec57a4df8fda0e7"
+  integrity sha512-UjCpRHOCq+KqMQxCei2+kEa4df8Xnemx12d29kvwzxbVJQ2jPBKyvf+vH2DNbk9CVQ6iIabIqc3OvGcom5751g==
   dependencies:
     "@ethereum-attestation-service/eas-contracts" "^0.27.1"
     ethers "^5.7.2"
+    js-base64 "^3.7.5"
     multiformats "9.9.0"
+    pako "^2.1.0"
 
 "@ethersproject/abi@5.7.0", "@ethersproject/abi@^5.1.2", "@ethersproject/abi@^5.7.0":
   version "5.7.0"
@@ -4598,21 +4600,21 @@ axe-core@^4.6.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
   integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
 
+axios@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.3.2.tgz#7ac517f0fa3ec46e0e636223fd973713a09c72b3"
+  integrity sha512-1M3O703bYqYuPhbHeya5bnhpYVsDDRyQSabNja04mZtboLNSuZ4YrltestrLXfHgmzua4TpUqRiVKbiQuo2epw==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 axios@^0.21.0:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
-
-axios@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
-  integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
-  dependencies:
-    follow-redirects "^1.15.0"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
 
 axobject-query@^3.1.1:
   version "3.2.1"
@@ -8781,6 +8783,11 @@ jiti@^1.18.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.18.2.tgz#80c3ef3d486ebf2450d9335122b32d121f2a83cd"
   integrity sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==
 
+js-base64@^3.7.5:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.5.tgz#21e24cf6b886f76d6f5f165bfcd69cc55b9e3fca"
+  integrity sha512-3MEt5DTINKqfScXKfJFrRbxkrnk2AxPWGBL/ycjz4dK8iqiSJ06UxD8jh8xuh6p10TX4t2+7FsBYVxxQbMg+qA==
+
 js-sdsl@^4.1.4:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/js-sdsl/-/js-sdsl-4.4.1.tgz#9e3c7b566d8d9a7e1fe8fc26d00b5ab0f8918ab3"
@@ -9851,6 +9858,11 @@ p-try@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+
+pako@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-2.1.0.tgz#266cc37f98c7d883545d11335c00fbd4062c9a86"
+  integrity sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==
 
 param-case@^3.0.4:
   version "3.0.4"
