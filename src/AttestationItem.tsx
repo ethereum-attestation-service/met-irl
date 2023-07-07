@@ -1,7 +1,7 @@
 import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useEnsAvatar, useSigner } from "wagmi";
 import dayjs from "dayjs";
 import {
   baseURL,
@@ -108,19 +108,23 @@ const eas = new EAS(EASContractAddress);
 
 export function AttestationItem({ data }: Props) {
   const { address } = useAccount();
+  const isAttester = data.attester.toLowerCase() === address?.toLowerCase();
   const [confirming, setConfirming] = useState(false);
+  const subjectAddress = isAttester ? data.recipient : data.attester;
+  const { data: avatar } = useEnsAvatar({
+    cacheTime: 60 * 60 * 24 * 7 * 1000,
+    address: subjectAddress as `0x${string}`,
+  });
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: signer } = useSigner();
-
   if (!address) return null;
 
-  const isAttester = data.attester.toLowerCase() === address.toLowerCase();
   const isConfirmed = !!data.confirmation;
+
   const isConfirmable = !isAttester && !isConfirmed;
 
   let Icon = MdVerified;
-
   if (!isConfirmed) {
     Icon = MdOutlineVerified;
   }
@@ -132,10 +136,19 @@ export function AttestationItem({ data }: Props) {
       }}
     >
       <IconHolder>
-        <Identicon
-          address={isAttester ? data.recipient : data.attester}
-          size={60}
-        />
+        {avatar ? (
+          <img
+            src={avatar}
+            style={{
+              height: 60,
+              width: 60,
+              borderRadius: 30,
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          <Identicon address={subjectAddress} size={60} />
+        )}
       </IconHolder>
       <NameHolder>{data.name}</NameHolder>
       <Time>{dayjs.unix(data.time).format(timeFormatString)}</Time>
