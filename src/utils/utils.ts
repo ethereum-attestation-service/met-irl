@@ -6,7 +6,11 @@ import type {
   EnsNamesResult,
   MyAttestationResult,
 } from "./types";
-import { StoreAttestationRequest, StoreIPFSActionReturn } from "./types";
+import {
+  ResolvedAttestation,
+  StoreAttestationRequest,
+  StoreIPFSActionReturn,
+} from "./types";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -218,4 +222,49 @@ export async function submitSignedAttestation(
     `${baseURL}/offchain/store`,
     data
   );
+}
+
+export async function getConnections(address: `0x${string}`) {
+  const tmpAttestations = await getAttestationsForAddress(address);
+
+  const addresses = new Set<string>();
+
+  tmpAttestations.forEach((att) => {
+    addresses.add(att.attester);
+    addresses.add(att.recipient);
+  });
+
+  let resolvedAttestations: ResolvedAttestation[] = [];
+
+  const ensNames = await getENSNames(Array.from(addresses));
+
+  const uids = tmpAttestations.map((att) => att.id);
+
+  const confirmations = await getConfirmationAttestationsForUIDs(uids);
+
+  tmpAttestations.forEach((att) => {
+    const amIAttester = att.attester.toLowerCase() === address.toLowerCase();
+
+    const otherGuy = amIAttester ? att.recipient : att.attester;
+
+    const relatedConfirmation = confirmations.find((conf) => {
+      return (
+        conf.refUID === att.id &&
+        ((amIAttester &&
+          conf.attester.toLowerCase() === otherGuy.toLowerCase()) ||
+          (!amIAttester &&
+            conf.attester.toLowerCase() === address.toLowerCase()))
+      );
+    });
+
+    resolvedAttestations.push({
+      ...att,
+      confirmation: relatedConfirmation,
+      name:
+        ensNames.find(
+          (name) => name.id.toLowerCase() === otherGuy.toLowerCase()
+        )?.name || otherGuy,
+    });
+  });
+  return resolvedAttestations;
 }

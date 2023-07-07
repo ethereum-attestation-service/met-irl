@@ -9,6 +9,7 @@ import {
   EAS_CONFIG,
   EASContractAddress,
   getAddressForENS,
+  getConnections,
   submitSignedAttestation,
 } from "./utils/utils";
 import {
@@ -24,6 +25,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import dayjs from "dayjs";
+import { ResolvedAttestation } from "./utils/types";
 
 const Title = styled.div`
   color: #163a54;
@@ -111,6 +113,7 @@ function Home() {
   const [attesting, setAttesting] = useState(false);
   const [ensResolvedAddress, setEnsResolvedAddress] = useState("Dakh.eth");
   const [searchParams] = useSearchParams();
+  // const [attestations, setAttestations] = useState<ResolvedAttestation[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -137,6 +140,17 @@ function Home() {
 
     checkENS();
   }, [address]);
+
+  // useEffect(() => {
+  //   async function runGetConnections() {
+  //     invariant(myAddress, "myAddress must be defined");
+  //
+  //     const connections = await getConnections(myAddress);
+  //     setAttestations(connections);
+  //   }
+  //
+  //   runGetConnections();
+  // }, [myAddress]);
 
   return (
     <Container>

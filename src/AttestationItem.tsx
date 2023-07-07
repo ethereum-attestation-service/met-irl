@@ -110,14 +110,14 @@ export function AttestationItem({ data }: Props) {
   const { address } = useAccount();
   const [confirming, setConfirming] = useState(false);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: signer } = useSigner();
+
   if (!address) return null;
 
   const isAttester = data.attester.toLowerCase() === address.toLowerCase();
   const isConfirmed = !!data.confirmation;
   const isConfirmable = !isAttester && !isConfirmed;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: signer } = useSigner();
 
   let Icon = MdVerified;
 

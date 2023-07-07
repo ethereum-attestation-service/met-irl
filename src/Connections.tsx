@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
 import { useAccount } from "wagmi";
-import {
-  getAttestationsForAddress,
-  getConfirmationAttestationsForUIDs,
-  getENSNames,
-} from "./utils/utils";
+import { getConnections } from "./utils/utils";
 import { ResolvedAttestation } from "./utils/types";
 import { AttestationItem } from "./AttestationItem";
+import invariant from "tiny-invariant";
+import { useNavigate } from "react-router";
 
 const Container = styled.div`
   @media (max-width: 700px) {
@@ -43,58 +41,23 @@ const WhiteBox = styled.div`
   }
 `;
 
-function Home() {
+function Connections() {
   const { address } = useAccount();
   const [attestations, setAttestations] = useState<ResolvedAttestation[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!address) {
+      return navigate("/");
+    }
+
     async function getAtts() {
       setAttestations([]);
       setLoading(true);
-      if (!address) return;
-      const tmpAttestations = await getAttestationsForAddress(address);
 
-      const addresses = new Set<string>();
-
-      tmpAttestations.forEach((att) => {
-        addresses.add(att.attester);
-        addresses.add(att.recipient);
-      });
-
-      let resolvedAttestations: ResolvedAttestation[] = [];
-
-      const ensNames = await getENSNames(Array.from(addresses));
-
-      const uids = tmpAttestations.map((att) => att.id);
-
-      const confirmations = await getConfirmationAttestationsForUIDs(uids);
-
-      tmpAttestations.forEach((att) => {
-        const amIAttester =
-          att.attester.toLowerCase() === address.toLowerCase();
-
-        const otherGuy = amIAttester ? att.recipient : att.attester;
-
-        const relatedConfirmation = confirmations.find((conf) => {
-          return (
-            conf.refUID === att.id &&
-            ((amIAttester &&
-              conf.attester.toLowerCase() === otherGuy.toLowerCase()) ||
-              (!amIAttester &&
-                conf.attester.toLowerCase() === address.toLowerCase()))
-          );
-        });
-
-        resolvedAttestations.push({
-          ...att,
-          confirmation: relatedConfirmation,
-          name:
-            ensNames.find(
-              (name) => name.id.toLowerCase() === otherGuy.toLowerCase()
-            )?.name || otherGuy,
-        });
-      });
+      invariant(address, "Address should be defined");
+      const resolvedAttestations = await getConnections(address);
 
       setAttestations(resolvedAttestations);
       setLoading(false);
@@ -122,4 +85,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Connections;
