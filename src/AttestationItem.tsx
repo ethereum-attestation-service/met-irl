@@ -113,7 +113,7 @@ export function AttestationItem({ data }: Props) {
   const subjectAddress = isAttester ? data.recipient : data.attester;
   const { data: avatar } = useEnsAvatar({
     cacheTime: 60 * 60 * 24 * 7 * 1000,
-    address: subjectAddress as `0x${string}`,
+    address: data.name as `0x${string}`,
   });
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
