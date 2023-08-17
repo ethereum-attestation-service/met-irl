@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
-import { useAccount, useEnsName, useSigner } from "wagmi";
-import { useModal } from "connectkit";
-import {
-  CUSTOM_SCHEMAS,
-  EASContractAddress,
-  getAddressForENS,
-  getAttestation,
-  getENSName,
-  timeFormatString,
-} from "./utils/utils";
-import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
-import invariant from "tiny-invariant";
-import { ethers } from "ethers";
-import { Attestation } from "./utils/types";
-import dayjs from "dayjs";
-import { Identicon } from "./components/Identicon";
+import { useAccount } from "wagmi";
+import { getENSName } from "./utils/utils";
 import { QRCodeSVG } from "qrcode.react";
 import { Link } from "react-router-dom";
 

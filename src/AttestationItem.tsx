@@ -1,7 +1,7 @@
 import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount, useEnsAvatar, useSigner } from "wagmi";
+import { useAccount, useEnsAvatar } from "wagmi";
 import dayjs from "dayjs";
 import {
   baseURL,
@@ -21,6 +21,7 @@ import invariant from "tiny-invariant";
 import { ethers } from "ethers";
 import { useState } from "react";
 import { MdOutlineVerified, MdVerified } from "react-icons/md";
+import { useSigner } from "./utils/wagmi-utils";
 
 const Container = styled.div`
   border-radius: 25px;
@@ -113,11 +114,10 @@ export function AttestationItem({ data }: Props) {
   const subjectAddress = isAttester ? data.recipient : data.attester;
   const { data: avatar } = useEnsAvatar({
     cacheTime: 60 * 60 * 24 * 7 * 1000,
-    address: data.name as `0x${string}`,
+    name: data.name,
   });
+  const signer = useSigner();
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: signer } = useSigner();
   if (!address) return null;
 
   const isConfirmed = !!data.confirmation;

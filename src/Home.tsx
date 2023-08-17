@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import { useModal } from "connectkit";
 import {
   baseURL,
@@ -9,7 +9,6 @@ import {
   EAS_CONFIG,
   EASContractAddress,
   getAddressForENS,
-  getConnections,
   submitSignedAttestation,
 } from "./utils/utils";
 import {
@@ -25,7 +24,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import dayjs from "dayjs";
-import { ResolvedAttestation } from "./utils/types";
+import { useSigner } from "./utils/wagmi-utils";
 
 const Title = styled.div`
   color: #163a54;
@@ -109,11 +108,10 @@ function Home() {
   const { status, address: myAddress } = useAccount();
   const modal = useModal();
   const [address, setAddress] = useState("");
-  const { data: signer } = useSigner();
+  const signer = useSigner();
   const [attesting, setAttesting] = useState(false);
   const [ensResolvedAddress, setEnsResolvedAddress] = useState("Dakh.eth");
   const [searchParams] = useSearchParams();
-  // const [attestations, setAttestations] = useState<ResolvedAttestation[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
