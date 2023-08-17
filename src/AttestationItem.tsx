@@ -1,7 +1,7 @@
 import { ResolvedAttestation } from "./utils/types";
 import styled from "styled-components";
 import { Identicon } from "./components/Identicon";
-import { useAccount, useEnsAvatar, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import dayjs from "dayjs";
 import {
   baseURL,
@@ -15,6 +15,7 @@ import invariant from "tiny-invariant";
 import { ethers } from "ethers";
 import { useState } from "react";
 import { MdOutlineVerified, MdVerified } from "react-icons/md";
+import { useSigner } from "./utils/wagmi-utils";
 
 const Container = styled.div`
   border-radius: 25px;
@@ -103,15 +104,13 @@ const eas = new EAS(EASContractAddress);
 export function AttestationItem({ data }: Props) {
   const { address } = useAccount();
   const [confirming, setConfirming] = useState(false);
+  const signer = useSigner();
 
   if (!address) return null;
 
   const isAttester = data.attester.toLowerCase() === address.toLowerCase();
   const isConfirmed = !!data.confirmation;
   const isConfirmable = !isAttester && !isConfirmed;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: signer } = useSigner();
 
   let Icon = MdVerified;
 

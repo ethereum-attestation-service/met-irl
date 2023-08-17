@@ -1,8 +1,8 @@
 import { Header } from "./components/Header";
 import { Outlet } from "react-router";
-import { createClient, WagmiConfig } from "wagmi";
 import * as chains from "wagmi/chains";
-import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import { WagmiConfig, createConfig } from "wagmi";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import "./App.css";
 import invariant from "tiny-invariant";
 import { activeChainConfig, alchemyApiKey } from "./utils/utils";
@@ -64,10 +64,12 @@ const usableChains = allChains
   .filter((chain) => chain.chainName === activeChainConfig!.chainName)
   .map((chain) => chain.chain);
 
-const client = createClient(
-  getDefaultClient({
-    appName: "Speaketh",
+const config = createConfig(
+  getDefaultConfig({
     alchemyId: alchemyApiKey,
+    walletConnectProjectId: "20ce3c35631a2b931e382204d8bfb6f1",
+    appName: "Ethereum Attestation Service - Attestation Explorer",
+
     chains: usableChains,
   })
 );
@@ -75,7 +77,7 @@ const client = createClient(
 export function Root() {
   return (
     <>
-      <WagmiConfig client={client}>
+      <WagmiConfig config={config}>
         <ConnectKitProvider
           theme={"soft"}
           customTheme={{
