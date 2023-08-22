@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GradientBar from "./components/GradientBar";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import { useModal } from "connectkit";
 import {
   baseURL,
@@ -16,6 +16,7 @@ import { ethers } from "ethers";
 import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { useSigner } from "./utils/wagmi-utils";
 
 const Title = styled.div`
   color: #163a54;
@@ -101,7 +102,7 @@ function Home() {
   const { status } = useAccount();
   const modal = useModal();
   const [address, setAddress] = useState("");
-  const { data: signer } = useSigner();
+  const signer = useSigner();
   const [attesting, setAttesting] = useState(false);
   const [ensResolvedAddress, setEnsResolvedAddress] = useState("Dakh.eth");
   const [searchParams] = useSearchParams();
