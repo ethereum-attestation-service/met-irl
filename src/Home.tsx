@@ -174,9 +174,9 @@ function Home() {
                   data: {
                     recipient: recipient,
                     data: encoded,
-                    refUID: ethers.constants.HashZero,
+                    refUID: ethers.ZeroHash,
                     revocable: true,
-                    expirationTime: 0,
+                    expirationTime: BigInt(0),
                   },
                   schema: CUSTOM_SCHEMAS.MET_IRL_SCHEMA,
                 });

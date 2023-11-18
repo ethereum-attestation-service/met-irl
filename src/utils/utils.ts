@@ -55,26 +55,25 @@ invariant(activeChainConfig, "No chain config found for chain ID");
 export const EASContractAddress = activeChainConfig.contractAddress;
 
 export const EASVersion = activeChainConfig.version;
-
-export const EAS_CONFIG = {
-  address: EASContractAddress,
-  version: EASVersion,
-  chainId: CHAINID,
-};
-
 export const timeFormatString = "MM/DD/YYYY h:mm:ss a";
 export async function getAddressForENS(name: string) {
-  const provider = new ethers.providers.StaticJsonRpcProvider(
+  const provider = new ethers.JsonRpcProvider(
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
-    "mainnet"
+    "mainnet",
+    {
+      staticNetwork: new ethers.Network("mainnet", 1),
+    }
   );
 
   return await provider.resolveName(name);
 }
 export async function getENSName(address: string) {
-  const provider = new ethers.providers.StaticJsonRpcProvider(
+  const provider = new ethers.JsonRpcProvider(
     `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
-    "mainnet"
+    "mainnet",
+    {
+      staticNetwork: new ethers.Network("mainnet", 1),
+    }
   );
   return await provider.lookupAddress(address);
 }

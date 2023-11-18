@@ -150,16 +150,15 @@ export function AttestationItem({ data }: Props) {
 
                 const tx = await eas.attest({
                   data: {
-                    recipient: ethers.constants.AddressZero,
+                    recipient: ethers.ZeroAddress,
                     data: encoded,
                     refUID: data.id,
                     revocable: true,
-                    expirationTime: 0,
+                    expirationTime: BigInt(0),
                   },
                   schema: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
                 });
 
-                await tx.wait();
                 setConfirming(false);
                 window.location.reload();
               } catch (e) {}
