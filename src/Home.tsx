@@ -6,7 +6,6 @@ import { useModal } from "connectkit";
 import {
   baseURL,
   CUSTOM_SCHEMAS,
-  EAS_CONFIG,
   EASContractAddress,
   getAddressForENS,
   submitSignedAttestation,
@@ -14,9 +13,7 @@ import {
 import {
   AttestationShareablePackageObject,
   EAS,
-  Offchain,
   SchemaEncoder,
-  TypedDataSigner,
 } from "@ethereum-attestation-service/eas-sdk";
 import invariant from "tiny-invariant";
 import { ethers } from "ethers";
@@ -187,7 +184,7 @@ function Home() {
                 eas.connect(signer);
 
                 // const offchain = await eas.getOffchain();
-                const offchain = new Offchain(EAS_CONFIG, 1);
+                const offchain = await eas.getOffchain();
 
                 const recipient = ensResolvedAddress
                   ? ensResolvedAddress
@@ -198,15 +195,15 @@ function Home() {
                     {
                       schema: CUSTOM_SCHEMAS.MET_IRL_SCHEMA,
                       recipient,
-                      refUID: ethers.constants.HashZero,
+                      refUID: ethers.ZeroHash,
                       data: encoded,
-                      time: dayjs().unix(),
+                      time: BigInt(dayjs().unix()),
                       revocable: true,
-                      expirationTime: 0,
+                      expirationTime: BigInt(0),
                       version: 1,
-                      nonce: 0,
+                      nonce: BigInt(0),
                     },
-                    signer as unknown as TypedDataSigner // Wagmi doesnt believe signer is typeddatasigner
+                    signer
                   );
 
                 const pkg: AttestationShareablePackageObject = {

@@ -72,28 +72,35 @@ invariant(activeChainConfig, "No chain config found for chain ID");
 export const EASContractAddress = activeChainConfig.contractAddress;
 
 export const EASVersion = activeChainConfig.version;
-
-export const EAS_CONFIG = {
-  address: EASContractAddress,
-  version: EASVersion,
-  chainId: CHAINID,
-};
-
 export const timeFormatString = "MM/DD/YYYY h:mm:ss a";
 export async function getAddressForENS(name: string) {
-  const provider = new ethers.providers.StaticJsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
-    "mainnet"
-  );
+  try {
+    const provider = new ethers.JsonRpcProvider(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+      "mainnet",
+      {
+        staticNetwork: new ethers.Network("mainnet", 1),
+      }
+    );
 
-  return await provider.resolveName(name);
+    return await provider.resolveName(name);
+  } catch (e) {
+    return null;
+  }
 }
 export async function getENSName(address: string) {
-  const provider = new ethers.providers.StaticJsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
-    "mainnet"
-  );
-  return await provider.lookupAddress(address);
+  try {
+    const provider = new ethers.JsonRpcProvider(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+      "mainnet",
+      {
+        staticNetwork: new ethers.Network("mainnet", 1),
+      }
+    );
+    return await provider.lookupAddress(address);
+  } catch (e) {
+    return null;
+  }
 }
 export async function getAttestation(uid: string): Promise<Attestation | null> {
   const response = await axios.post<AttestationResult>(

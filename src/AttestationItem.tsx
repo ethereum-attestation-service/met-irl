@@ -15,7 +15,6 @@ import {
   AttestationShareablePackageObject,
   EAS,
   SchemaEncoder,
-  TypedDataSigner,
 } from "@ethereum-attestation-service/eas-sdk";
 import invariant from "tiny-invariant";
 import { ethers } from "ethers";
@@ -174,16 +173,16 @@ export function AttestationItem({ data }: Props) {
                   await offchain.signOffchainAttestation(
                     {
                       schema: CUSTOM_SCHEMAS.CONFIRM_SCHEMA,
-                      recipient: ethers.constants.AddressZero,
+                      recipient: ethers.ZeroAddress,
                       refUID: data.id,
                       data: encoded,
-                      time: dayjs().unix(),
+                      time: BigInt(dayjs().unix()),
                       revocable: true,
-                      expirationTime: 0,
+                      expirationTime: BigInt(0),
                       version: 1,
-                      nonce: 0,
+                      nonce: BigInt(0),
                     },
-                    signer as unknown as TypedDataSigner // Wagmi doesnt believe signer is typeddatasigner
+                    signer
                   );
 
                 const pkg: AttestationShareablePackageObject = {
