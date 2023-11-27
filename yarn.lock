@@ -1401,20 +1401,20 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.54.0.tgz#4fab9a2ff7860082c304f750e94acd644cf984cf"
   integrity sha512-ut5V+D+fOoWPgGGNj83GGjnntO39xDy6DWxO0wb7Jp3DcMX0TfIqdzHF85VTQkerdyGmuuMD9AKAo5KiNlf/AQ==
 
-"@ethereum-attestation-service/eas-contracts@1.3.0-beta.0":
-  version "1.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-contracts/-/eas-contracts-1.3.0-beta.0.tgz#72a440ed68e1c08eb362a5081e17cbc96ed557e8"
-  integrity sha512-RMXoJakoxO3KIpqTFJKSN0Hsij07yIMgapRcAnwiQTDS4llbxaKc3kki2RTJ9hmwai/wpyOQZYGYgIC0iGxnrA==
+"@ethereum-attestation-service/eas-contracts@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-contracts/-/eas-contracts-1.3.3.tgz#3c9cdf2a1270c0a79c9089f11deec26fc448e3f5"
+  integrity sha512-x4Qo1hQxFrvJjiLZ5GyrgDaijEewUYwoGvb8GrBXHnfwyk3n2xCBQtl+5ZEWskwq+tbXK3QjxGtZdRhnIQcaSA==
   dependencies:
     hardhat "2.18.2"
 
-"@ethereum-attestation-service/eas-sdk@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-sdk/-/eas-sdk-1.3.3.tgz#9a02c317e0c3fbf7c715e5bd3e0edba6c1facb88"
-  integrity sha512-6k9c0L/C7qrA7vkAn+tlaqN6umAjg3KUJtgChtlLbO89WDKSAm4x4YhcyrjMtCSG+ugMtLwZG3OwKJYsFYvOWw==
+"@ethereum-attestation-service/eas-sdk@1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@ethereum-attestation-service/eas-sdk/-/eas-sdk-1.3.4.tgz#67a1493ee3e55a6dc90ea86a3592ab5e491b73d5"
+  integrity sha512-mbw6ElP/2nNRbKHXXzsjNr/C1KdYVBSGQbbQo0vd9IaPSeKOGCc2hn6vuPKRlSDOG8mfm1L6rUdQFIARYNORyg==
   dependencies:
-    "@ethereum-attestation-service/eas-contracts" "1.3.0-beta.0"
-    ethers "^6.8.1"
+    "@ethereum-attestation-service/eas-contracts" "1.3.3"
+    ethers "^6.9.0"
     js-base64 "^3.7.5"
     lodash "^4.17.21"
     multiformats "9.9.0"
@@ -5429,10 +5429,10 @@ connect-history-api-fallback@^2.0.0:
   resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-2.0.0.tgz#647264845251a0daf25b97ce87834cace0f5f1c8"
   integrity sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==
 
-connectkit@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.5.0.tgz#281cdc60080de059d77f9230dcb33cdd3c64b55d"
-  integrity sha512-xFYqsUkGs9XP5UC4rzktNTjwb8u2gkh+xNcJwHQ3b3HDQU67bdjKPPAq11ZYMdWVURDrZKOp8EBdGpQwuB5XYg==
+connectkit@1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.5.3.tgz#3e6bcd6f766c4577cb314d72cd42eee807b5fd51"
+  integrity sha512-vXneVOa+oit5Migoxca2QkgVBHaROItzb2kW13o7aUrcEcecYIGZjsizsVM2YvIdKihyWs+zJFrlED4g8zAMew==
   dependencies:
     buffer "^6.0.3"
     detect-browser "^5.3.0"
@@ -6823,10 +6823,10 @@ ethereumjs-util@^6.0.0, ethereumjs-util@^6.2.1:
     ethjs-util "0.1.6"
     rlp "^2.2.3"
 
-ethers@6.8.1:
-  version "6.8.1"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.8.1.tgz#ee2a1a39b5f62a13678f90ccd879175391d0a2b4"
-  integrity sha512-iEKm6zox5h1lDn6scuRWdIdFJUCGg3+/aQWu0F4K0GVyEZiktFkqrJbRjTn1FlYEPz7RKA707D6g5Kdk6j7Ljg==
+ethers@6.9.0, ethers@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.9.0.tgz#a4534bdcdfde306aee94ef32f3d5c70d7e33fcb9"
+  integrity sha512-pmfNyQzc2mseLe91FnT2vmNaTt8dDzhxZ/xItAV7uGsF4dI4ek2ufMu3rAkgQETL/TIs0GS5A+U05g9QyWnv3Q==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"
@@ -6871,19 +6871,6 @@ ethers@^5.7.1:
     "@ethersproject/wallet" "5.7.0"
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
-
-ethers@^6.8.1:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.9.0.tgz#a4534bdcdfde306aee94ef32f3d5c70d7e33fcb9"
-  integrity sha512-pmfNyQzc2mseLe91FnT2vmNaTt8dDzhxZ/xItAV7uGsF4dI4ek2ufMu3rAkgQETL/TIs0GS5A+U05g9QyWnv3Q==
-  dependencies:
-    "@adraffy/ens-normalize" "1.10.0"
-    "@noble/curves" "1.2.0"
-    "@noble/hashes" "1.3.2"
-    "@types/node" "18.15.13"
-    aes-js "4.0.0-beta.5"
-    tslib "2.4.0"
-    ws "8.5.0"
 
 ethjs-util@0.1.6, ethjs-util@^0.1.6:
   version "0.1.6"
@@ -12738,7 +12725,7 @@ typedarray-to-buffer@3.1.5, typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^5.1.6:
+typescript@5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.2.tgz#00d1c7c1c46928c5845c1ee8d0cc2791031d4c43"
   integrity sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==
@@ -12987,7 +12974,7 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-viem@^1.0.0, viem@^1.5.3:
+viem@1.19.9, viem@^1.0.0:
   version "1.19.9"
   resolved "https://registry.yarnpkg.com/viem/-/viem-1.19.9.tgz#a11f3ad4a3323994ebd2010dbc659d1a2b12e583"
   integrity sha512-Sf9U2x4jU0S/FALqYypcspWOGene0NZyD470oUripNhE0Ta6uOE/OgE4toTDVfRxov8qw0JFinr/wPGxYE3+HQ==
@@ -13015,7 +13002,7 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-wagmi@^1.3.9:
+wagmi@1.4.7:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-1.4.7.tgz#4236007e3d01359c4281cce34b7884ddcae3fa02"
   integrity sha512-/k8gA9S6RnwU6Qroxs630jAFvRIx+DSKpCP1owgAEGWc7D2bAJHljwRSCRTGENz48HyJ4V3R7KYV1yImxPvM3A==
