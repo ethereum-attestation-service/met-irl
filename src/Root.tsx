@@ -6,6 +6,7 @@ import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import "./App.css";
 import invariant from "tiny-invariant";
 import { activeChainConfig, alchemyApiKey } from "./utils/utils";
+import { WrongChainModal } from "./components/WrongChainModal";
 
 invariant(activeChainConfig, "Chain config is not set");
 
@@ -61,7 +62,7 @@ const allChains: ChainConfig[] = [
 ];
 
 const usableChains = allChains
-  .filter((chain) => chain.chainName === activeChainConfig!.chainName)
+  // .filter((chain) => chain.chainName === activeChainConfig!.chainName)
   .map((chain) => chain.chain);
 
 const config = createConfig(
@@ -86,11 +87,13 @@ export function Root() {
           options={{
             hideQuestionMarkCTA: true,
             hideTooltips: true,
+            enforceSupportedChains: false,
           }}
         >
           <Header />
           <Outlet />
         </ConnectKitProvider>
+        <WrongChainModal />
       </WagmiConfig>
     </>
   );
