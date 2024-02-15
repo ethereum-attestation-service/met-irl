@@ -102,11 +102,6 @@ const WhiteBox = styled.div`
 `;
 
 function Home() {
-  // to serialize the BigInt
-  (BigInt.prototype as any).toJSON = function () {
-    return this.toString();
-  };
-
   const { status, address: myAddress } = useAccount();
   const modal = useModal();
   const [address, setAddress] = useState("");

@@ -107,10 +107,6 @@ type Props = {
 const eas = new EAS(EASContractAddress);
 
 export function AttestationItem({ data }: Props) {
-  // to serialize the BigInt
-  (BigInt.prototype as any).toJSON = function () {
-    return this.toString();
-  };
   const { address } = useAccount();
   const isAttester = data.attester.toLowerCase() === address?.toLowerCase();
   const [confirming, setConfirming] = useState(false);
