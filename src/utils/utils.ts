@@ -18,6 +18,11 @@ import { ethers } from "ethers";
 import { AttestationShareablePackageObject } from "@ethereum-attestation-service/eas-sdk";
 import axios from "axios";
 
+// Override toJSON method of BigInt prototype to serialize the BigInt
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 export const alchemyApiKey = process.env.REACT_APP_ALCHEMY_API_KEY;
 
 export const CUSTOM_SCHEMAS = {
