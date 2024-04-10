@@ -1,46 +1,36 @@
-# Getting Started with Create React App
+# Attest to real-life meetings with metIRL
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Check out [metirl.org](https://metirl.org) to play the live version.
 
-In the project directory, you can run:
+## How It Works
 
-### `npm start`
+1. **User Registration**: Users sign in using their own wallet. The chosen wallet is used to sign offchain attestations.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. **metIRL Attestation**: A user can attest to meeting any other wallet in real life using the ```bool metIRL```. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+3. **isTrue Attestation**: A user can confirm a meeting by using the metIRL attestation as a referenced attestation and attesting to it with schema ```bool isTrue```, the universal EAS standard for confirming or denying another attestation. 
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+To run the RPS project locally:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Ensure that you have Node.js and npm installed before proceeding.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the frontend repo:
+   ```bash
+   git clone https://github.com/ethereum-attestation-service/met-irl.git
+   ```
+2. Install dependencies:
+   ```bash
+   cd met-irl
+   npm i
+   ```
+3. Set up your .env file with your Alchemy API key (for resolving ENS names).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. Start the Development Server
+   ```bash
+   npm run start
+   ```
+After completing these steps, the MetIRL display will be shown on port 3000.
