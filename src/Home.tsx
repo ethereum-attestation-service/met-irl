@@ -137,7 +137,7 @@ function Home() {
       <GradientBar />
       <WhiteBox>
         <Title>
-          I <b>attest</b> that I met
+          I <b>attest</b> that together with
         </Title>
 
         <InputContainer>
@@ -145,12 +145,41 @@ function Home() {
             autoCorrect={"off"}
             autoComplete={"off"}
             autoCapitalize={"off"}
-            placeholder={"Address/ENS"}
+            placeholder={"Nominee Name"}
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
           {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
         </InputContainer>
+<WhiteBox>
+        <Title>
+          We  <b>Created a Partnership</b> between
+        </Title>
+  
+        <InputContainer>
+          <InputBlock
+            autoCorrect={"off"}
+            autoComplete={"off"}
+            autoCapitalize={"off"}
+            placeholder={"1st Company Name"}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
+        </InputContainer>
+
+        <InputContainer>
+          <InputBlock
+            autoCorrect={"off"}
+            autoComplete={"off"}
+            autoCapitalize={"off"}
+            placeholder={"1st Company Name"}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
+        </InputContainer>
+        
         <MetButton
           onClick={async () => {
             if (status !== "connected") {
