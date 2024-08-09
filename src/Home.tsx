@@ -151,7 +151,7 @@ function Home() {
           />
           {ensResolvedAddress && <EnsLogo src={"/ens-logo.png"} />}
         </InputContainer>
-<WhiteBox>
+
         <Title>
           We  <b>Created a Partnership</b> between
         </Title>
